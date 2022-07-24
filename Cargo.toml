@@ -1,5 +1,5 @@
 [package]
-name = "udp_client"
+name = "udp_speed_test"
 version = "0.1.0"
 edition = "2018"
 
@@ -7,3 +7,4 @@ edition = "2018"
 
 [dependencies]
 rand = { version = "0.8.5" }
+clap = { version = "3.2.14", features = ["derive"] }

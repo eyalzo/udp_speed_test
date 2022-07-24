@@ -1,15 +1,27 @@
 use std::net::{Ipv4Addr, UdpSocket};
 use std::time::Instant;
 use rand::Rng;
+use clap::Parser;
+
+/// UDP speed test client, to be used with a dedicated server (same project)
+#[derive(Parser)]
+#[clap(author, version, about)]
+struct Cli {
+    /// Size of buffer to send repeatedly.
+    /// By default OSX has limited the maximum UDP-package to be 9216 bytes.
+    /// Alter this value using the following command in the terminal:
+    /// sudo sysctl -w net.inet.udp.maxdgram=65535
+    #[clap(short, long, value_parser, default_value_t = 5000)]
+    buffer_size: usize,
+    #[clap(short, long, value_parser, default_value_t = 1000000)]
+    total_send: u64,
+}
 
 fn main() -> std::io::Result<()> {
+    let args = Cli::parse();
+
     let server_addr = "127.0.0.1:35000";
-    // By default OSX has limited the maximum UDP-package to be 9216 bytes.
-    // Alter this value using the following command in the terminal:
-    // sudo sysctl -w net.inet.udp.maxdgram=65535
-    const BUFF_SIZE: usize = 5000;
-    const TOTAL_TO_SEND: usize = 1000 * 1000 * 1000; // 100 MB
-    let loop_count = TOTAL_TO_SEND / BUFF_SIZE;
+    let loop_count = args.total_send / args.buffer_size as u64;
 
     println!("Client start...");
     // Bind to local address
@@ -19,10 +31,11 @@ fn main() -> std::io::Result<()> {
     // Connect, which is not really a connection because it's UDP, so it always succeeds
     socket.connect(server_addr).expect("   Error. Failed to connect.");
     println!("   Will try to send to UDP server {}.", server_addr);
+    println!("      Up to {} bytes in {} loops of {} bytes buffer.", args.total_send, loop_count, args.buffer_size);
 
     // Prepare buffer
     let mut rnd = rand::thread_rng();
-    let mut buf: Vec<u8> = Vec::with_capacity(BUFF_SIZE);
+    let mut buf: Vec<u8> = Vec::with_capacity(args.buffer_size);
     for _ in 0..buf.capacity() {
         buf.push(rnd.gen::<u8>());
     }
