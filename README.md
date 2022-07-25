@@ -9,7 +9,37 @@ $ cargo run --bin udp_server
 $ cargo run --bin udp_client
 ```
 
-## Client
+# Results
+
+The following tests were performed with OSX locally on a laptop:
+MacBook Pro (16-inch, 2019), 8 core 2.4 GHz, 32 GB memory.
+
+Single client and single server. For example:
+```bash
+$ cargo run --release --bin udp_server
+$ cargo run --release --bin udp_client -- -t 1000000000 -b 65500
+```
+
+| Buffer | Speed     |
+|--------|-----------|
+|   500  |  1.1 Gbps |
+|  1000  |  2.4 Gbps |
+|  1500  |  3.5 Gbps |
+|  2000  |  4.7 Gbps |
+|  2500  |  5.9 Gbps |
+|  3000  |  6.9 Gbps |
+|  3500  |  8.0 Gbps |
+|  4000  |  9.1 Gbps |
+|  5000  | 10.8 Gbps |
+| 10000  | 19.4 Gbps |
+| 20000  | 32.8 Gbps |
+| 30000  | 42.9 Gbps |
+| 40000  | 50.0 Gbps |
+| 50000  | 55.6 Gbps |
+| 60000  | 60.4 Gbps |
+| 65500  | 63.5 Gbps |
+
+# Client
 
 Run the client only after the server is already running.
 
@@ -30,7 +60,7 @@ OPTIONS:
     -V, --version                      Print version information
 ```
 
-### Message (buffer) size
+## Message (buffer) size
 
 By default, OSX has limited the maximum UDP-package to be 9216 bytes.
 Alter this value using the following command in the terminal:
