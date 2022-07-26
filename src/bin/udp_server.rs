@@ -1,13 +1,23 @@
-use std::net::UdpSocket;
+use std::net::{SocketAddr, UdpSocket};
 use std::time::Instant;
+use clap::Parser;
+
+/// UDP speed test server
+#[derive(Parser)]
+#[clap(author, version, about)]
+struct Cli {
+    #[clap(short, long, value_parser, default_value = "127.0.0.1:35000")]
+    server_addr: SocketAddr,
+}
 
 fn main() -> std::io::Result<()> {
+    let args = Cli::parse();
+
     {
-        let server_addr = "127.0.0.1:35000";
         // Min interval for a print and speed calculation
         const MIN_INTERVAL_MILLIS: usize = 100;
-        println!("Server is binding to address {} ...", server_addr);
-        let socket = UdpSocket::bind(server_addr).expect("   Error. Couldn't bind to address");
+        println!("Server is binding to address {} ...", args.server_addr);
+        let socket = UdpSocket::bind(args.server_addr).expect("   Error. Couldn't bind to address");
         let mut total_bytes: u64 = 0;
         let mut interval_bytes: u64 = 0;
         let mut interval_start_time = Instant::now();

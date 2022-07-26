@@ -9,35 +9,22 @@ $ cargo run --bin udp_server
 $ cargo run --bin udp_client
 ```
 
-# Results
+# Server
 
-The following tests were performed with OSX locally on a laptop:
-MacBook Pro (16-inch, 2019), 8 core 2.4 GHz, 32 GB memory.
+Run the server first.
 
-Single client and single server. For example:
 ```bash
-$ cargo run --release --bin udp_server
-$ cargo run --release --bin udp_client -- -t 1000000000 -b 65500
-```
+udp_speed_test 0.1.0
+UDP speed test server
 
-| Buffer | Speed<br>1 client | Speed<br>2 clients |
-|--------|-------------------|--------------------|
-|   500  |  1.1 Gbps | |
-|  1000  |  2.4 Gbps | |
-|  1500  |  3.5 Gbps | |
-|  2000  |  4.7 Gbps | |
-|  2500  |  5.9 Gbps | |
-|  3000  |  6.9 Gbps | |
-|  3500  |  8.0 Gbps | |
-|  4000  |  9.1 Gbps | |
-|  5000  | 10.8 Gbps | |
-| 10000  | 19.4 Gbps | 15.8 Gbps |
-| 20000  | 32.8 Gbps | 28.5 Gbps |
-| 30000  | 42.9 Gbps | |
-| 40000  | 50.0 Gbps | |
-| 50000  | 55.6 Gbps | |
-| 60000  | 60.4 Gbps | |
-| 65500  | 63.5 Gbps | |
+USAGE:
+    udp_server [OPTIONS]
+
+OPTIONS:
+    -h, --help                         Print help information
+    -s, --server-addr <SERVER_ADDR>    [default: 127.0.0.1:35000]
+    -V, --version                      Print version information
+```
 
 # Client
 
@@ -88,3 +75,33 @@ udp_serve 51465 eyalzohar    3u  IPv4 0x65bab850e63356fd 779960  UDP localhost:3
 udp_clien 55754 eyalzohar    3u  IPv4 0x65bab850e633602d      0  UDP localhost:60444->localhost:35000
 udp_clien 55755 eyalzohar    3u  IPv4 0x65bab850e3983d1d      0  UDP localhost:61102->localhost:35000
 ```
+
+# Results
+
+The following tests were performed with OSX locally on a laptop:
+MacBook Pro (16-inch, 2019), 8 core 2.4 GHz, 32 GB memory.
+
+Single client and single server. For example:
+```bash
+$ cargo run --release --bin udp_server
+$ cargo run --release --bin udp_client -- -t 1000000000 -b 65500
+```
+
+| Buffer | Speed<br>1 client | Speed<br>2 clients |
+|--------|-------------------|--------------------|
+|   500  |  1.1 Gbps | |
+|  1000  |  2.4 Gbps | |
+|  1500  |  3.5 Gbps | |
+|  2000  |  4.7 Gbps | |
+|  2500  |  5.9 Gbps | |
+|  3000  |  6.9 Gbps | |
+|  3500  |  8.0 Gbps | |
+|  4000  |  9.1 Gbps | |
+|  5000  | 10.8 Gbps | |
+| 10000  | 19.4 Gbps | 15.8 Gbps |
+| 20000  | 32.8 Gbps | 28.5 Gbps |
+| 30000  | 42.9 Gbps | |
+| 40000  | 50.0 Gbps | |
+| 50000  | 55.6 Gbps | |
+| 60000  | 60.4 Gbps | |
+| 65500  | 63.5 Gbps | |
