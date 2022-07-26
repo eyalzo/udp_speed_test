@@ -1,4 +1,4 @@
-use std::net::{Ipv4Addr, UdpSocket};
+use std::net::{Ipv4Addr, SocketAddr, UdpSocket};
 use std::time::Instant;
 use rand::Rng;
 use clap::Parser;
@@ -15,12 +15,13 @@ struct Cli {
     buffer_size: usize,
     #[clap(short, long, value_parser, default_value_t = 1000000)]
     total_send: u64,
+    #[clap(short, long, value_parser, default_value = "127.0.0.1:35000")]
+    server_addr: SocketAddr,
 }
 
 fn main() -> std::io::Result<()> {
     let args = Cli::parse();
 
-    let server_addr = "127.0.0.1:35000";
     let loop_count = args.total_send / args.buffer_size as u64;
 
     println!("Client start...");
@@ -29,8 +30,8 @@ fn main() -> std::io::Result<()> {
     println!("   Client is bound to local address {}", socket.local_addr().unwrap());
 
     // Connect, which is not really a connection because it's UDP, so it always succeeds
-    socket.connect(server_addr).expect("   Error. Failed to connect.");
-    println!("   Will try to send to UDP server {}.", server_addr);
+    socket.connect(args.server_addr).expect("   Error. Failed to connect.");
+    println!("   Will try to send to UDP server {}.", args.server_addr);
     println!("      Up to {} bytes in {} loops of {} bytes buffer.", args.total_send, loop_count, args.buffer_size);
 
     // Prepare buffer

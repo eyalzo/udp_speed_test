@@ -56,6 +56,7 @@ OPTIONS:
                                        using the following command in the terminal: sudo sysctl -w
                                        net.inet.udp.maxdgram=65535 [default: 5000]
     -h, --help                         Print help information
+    -s, --server-addr <SERVER_ADDR>    [default: 127.0.0.1:35000]
     -t, --total-send <TOTAL_SEND>      [default: 1000000]
     -V, --version                      Print version information
 ```
